@@ -8,13 +8,13 @@ use App\Models\Category;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-        //
-    }
-
     public function boot()
     {
-        View::share('categories', Category::where('cat_ust',0)->with( 'subcategories')->get());
+        View::composer('*', function ($view) {
+
+            $categories = Category::where('cat_ust', 0)->with('subcategories')->get();
+            $view->with('categories', $categories);
+
+        });
     }
 }
