@@ -32,6 +32,11 @@
                             <a href="{{route('logout')}}">Çıkış Yap</a>
                         </div>
                         <ul class="header__right__widget">
+                            <li><a href="{{route('ticket.list')}}"><i class="fa-solid fa-envelope"></i>
+                                    <div class="tip">{{count(Auth::user()->ticket)}}</div>
+                                </a></li>
+                        </ul>&nbsp;&nbsp;&nbsp;
+                        <ul class="header__right__widget">
                             <li><a href="{{route('cart',Auth::id())}}"><span class="icon_cart_alt"></span>
                                     <div class="tip">{{count(Auth::user()->cart)}}</div>
                                 </a></li>

@@ -52,7 +52,7 @@
                     </div>
                     <div class="product__details__price">{{$product->price}} ₺</div>
                     <p>{{$product->description}}</p>
-                    <form action="{{route('cart.create',$product->id)}}" method="post">
+                    <form action="{{route('cart.create', $product->id)}}" method="post">
                         @csrf
                         <div class="product__details__button">
                             <select name="qty" class="form-control">
@@ -79,18 +79,69 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                            <h6>Description</h6>
-                            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                consequat massa quis enim.</p>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                quis, sem.</p>
+                            @if(!empty($product->comments) && $product->comments->count() > 0)
+                                @foreach ($product->comments as $comment)
+                                    <div class="card card-success">
+                                        <div class="card-header bg-danger">
+                                            <h3 class="card-title">{{$comment->user->name}}</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>{{$comment->comment}}</p>
+                                            <p><b>Ürün Değerlendirme Puanı ; {{$comment->rating}}</b>
+                                            <p>Yorumun Tarihi ; <b>{{$comment->created_at}}</b></p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+
+
                         </div>
+                    </div>
+                    <div class="mt-5">
+                        @if ($control)
+                            <form action="{{route('comment.create', $product->id)}}" method="post" class="checkout__form">
+                                @csrf
+                                @if ($errors)
+                                    @foreach ($errors->all() as $error)
+                                        <div class="alert alert-danger">
+                                            {{$error}}
+                                        </div>
+                                    @endforeach
+                                @endif
+                                @if (session()->get('success'))
+                                    <div class="alert alert-success">
+                                        {{session()->get('success')}}
+                                    </div>
+                                @endif
+
+                                @if (session()->get('error'))
+                                    <div class="alert alert-danger">
+                                        {{session()->get('error')}}
+                                    </div>
+                                @endif
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+                                        <div class="checkout__form__input">
+                                            <p>Ürün Değerlendirmesi <span>*</span></p>
+                                            <select class="form-control" name="rating">
+                                                <option value="1">1 puan</option>
+                                                <option value="2">2 puan</option>
+                                                <option value="3">3 puan</option>
+                                                <option value="4">4 puan</option>
+                                                <option value="5">5 puan</option>
+                                            </select>
+                                        </div>
+                                        <div class="checkout__form__input mt-4">
+                                            <p>Ürün Değerlendirme Yorum<span>*</span></p>
+                                            <textarea class="form-control" name="comment"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-6 col-sm-6">
+                                        <button type="submit" class="site-btn">Ürünü Değerlendir</button>
+                                    </div>
+                                </div>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>

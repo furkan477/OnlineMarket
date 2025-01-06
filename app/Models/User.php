@@ -64,4 +64,12 @@ class User extends Authenticatable
     public function comments(){
         return $this->hasMany(Comment::class,'user_id','id');
     }
+
+    public function ticket(){
+        return $this->hasMany(Ticket::class,'user_id','id');
+    }
+
+    public function ticketmessage(){
+        return $this->hasMany(TicketMessage::class,'sender_id','id');
+    }
 }

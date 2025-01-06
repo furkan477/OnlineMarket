@@ -50,6 +50,29 @@
                                                         <p>Alınan Adet Fiyatı : <b>{{$orderitem->price}} ₺</b></p>
                                                         <p>Alınan Adet : <b>{{$orderitem->qty}} Adet</b></p>
                                                         <p>Sipariş Tarihiniz : <b>{{$order->created_at}}</b></p>
+                                                        <form action="{{route('ticket.create',$orderitem->products->id)}}" method="post" class="checkout__form">
+                                                            @csrf
+                                                            @if ($errors)
+                                                                @foreach ($errors->all() as $error)
+                                                                    <div class="alert alert-danger">
+                                                                        {{$error}}
+                                                                    </div>
+                                                                @endforeach
+                                                            @endif
+                                                            @if (session()->get('success'))
+                                                                <div class="alert alert-success">
+                                                                    {{session()->get('success')}}
+                                                                </div>
+                                                            @endif
+
+                                                            @if (session()->get('error'))
+                                                                <div class="alert alert-danger">
+                                                                    {{session()->get('error')}}
+                                                                </div>
+                                                            @endif
+                                                            <input type="text" name="subject" class="form-control" placeholder="Destek Talebi Amacınızı Yazın">
+                                                            <button type="submit" class="mt-2 btn btn-primary">Destek Talebi Başlat</button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>

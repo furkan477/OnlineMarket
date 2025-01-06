@@ -5,17 +5,20 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
+use App\Models\Order;
+use App\Models\Orderİtems;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Stores;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
 {
     public function ProductsList(Stores $store, Request $request)
     {
         if (!empty($request->category_id)) {
-            $category = Category::where('id',$request->category_id)->first();
+            $category = Category::where('id', $request->category_id)->first();
             $categories = $category->getAllSubCategories($category);
             $products = Product::where('store_id', $store->id)->whereIn('category_id', $categories)->get();
         } else {
@@ -54,6 +57,17 @@ class ProductsController extends Controller
 
     public function ProductsDetail(Product $product)
     {
-        return view('site.pages.products.productsdetail', compact('product'));
+        $control = false;
+        foreach ($product->orderitems as $item) {
+            if ($item->orders->user->id == Auth::id()) {
+                $control = true;
+                break;
+            } else {
+                $control = false;
+                break;
+            }
+        }
+
+        return view('site.pages.products.productsdetail', compact('product', 'control'));
     }
 }

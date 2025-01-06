@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Site\CartController;
+use App\Http\Controllers\Site\CommentController;
 use App\Http\Controllers\Site\CouponController;
 use App\Http\Controllers\Site\OrderController;
 use App\Http\Controllers\Site\PaymentController;
 use App\Http\Controllers\Site\ProductsController;
 use App\Http\Controllers\Site\SiteController;
 use App\Http\Controllers\Site\StoresController;
+use App\Http\Controllers\Site\TicketController;
 use App\Http\Middleware\BuyerMiddleware;
 use App\Http\Middleware\SellerMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +35,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('coupon',[CouponController::class,'Coupon'])->name('coupon');
     Route::post('payment',[PaymentController::class,'payment'])->name('payment');
     Route::get('/order/{user}',[OrderController::class,'Order'])->name('order');
+    Route::post('/comment/{product}',[CommentController::class,'CommentCreate'])->name('comment.create');
+    Route::post('/ticket-create/{product}',[TicketController::class,'TicketCreate'])->name('ticket.create');
+    Route::get('/ticket-list',[TicketController::class,'TicketList'])->name('ticket.list');
+    Route::get('/ticket-detail/{ticket}',[TicketController::class,'TicketDetail'])->name('ticket.detail');
+    Route::post('/ticket-message-create/{ticket}',[TicketController::class,'TicketMessageCreate'])->name('ticket.message.create');
 });
 
 

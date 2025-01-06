@@ -36,4 +36,8 @@ class Product extends Model
     public function comments(){
         return $this->hasMany(Comment::class,'products_id','id');
     }
+
+    public function ticket(){
+        return $this->belongsTo(Ticket::class,'product_id','id');
+    }
 }
